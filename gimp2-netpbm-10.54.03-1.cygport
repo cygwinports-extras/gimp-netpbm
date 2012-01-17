@@ -1,0 +1,40 @@
+SVN_URI="https://netpbm.svn.sourceforge.net/svnroot/netpbm"
+SVN_BRANCH="advanced"
+SVN_REV=1472
+inherit svn
+
+DESCRIPTION="Toolkit for manipulation of graphic images"
+HOMEPAGE="http://netpbm.sourceforge.net/"
+SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-${PV}.tar.gz"
+SRC_DIR="gimp-netpbm2gimp-plugins-${PV}"
+
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	eval $(sed -e 's/ //g' ../netpbm/version.mk)
+	if ((NETPBM_MAJOR_RELEASE != PVP[0])) ||
+	   ((NETPBM_MINOR_RELEASE != PVP[1])) ||
+	   ((NETPBM_POINT_RELEASE != PVP[2]))
+	then
+		error "Package version should be $NETPBM_MAJOR_RELEASE.$NETPBM_MINOR_RELEASE.$NETPBM_POINT_RELEASE"
+	fi
+}
+
+src_compile() {
+	lndirs
+	cd ${B}
+	ln -sf $(find ${S}/../netpbm/lib/ -name '*.h') .
+	ln -sf . netpbm
+	CFLAGS+=" -I."
+	CYGCONF_SOURCE=${B}
+	cygconf --with-netpbmdir=${S}/../netpbm
+	cygmake
+}
+
+src_install() {
+	local plugindir=$(pkg-config --variable=gimplibdir gimp-2.0)/plug-ins
+	cd ${B}
+	exeinto ${plugindir}
+	doexe *.exe
+
+	dodoc ${S}/../netpbm/doc/GPL_LICENSE.txt
+}
