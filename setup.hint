@@ -1,7 +1,0 @@
-category: Graphics
-requires: gimp2 libglib2.0_0 libgomp1 libgtk2.0_0 libpango1.0_0 libtiff5
-sdesc: "GIMP Netpbm plugins"
-ldesc: "A collection of over 200 GIMP plug-ins created by running 
-unmodified Netpbm source code through Netpbm2Gimp. There is a particular 
-emphasis on converting GIMP images to and from a variety of obscure 
-image formats."

@@ -1,12 +1,19 @@
 SVN_URI="https://netpbm.svn.sourceforge.net/svnroot/netpbm"
 SVN_BRANCH="advanced"
-SVN_REV=1472
+SVN_REV=1705
 inherit svn
 
-DESCRIPTION="Toolkit for manipulation of graphic images"
+CATEGORY="Graphics"
+SUMMARY="GIMP Netpbm plugins"
+DESCRIPTION="A collection of over 200 GIMP plug-ins created by running
+unmodified Netpbm source code through Netpbm2Gimp. There is a particular
+emphasis on converting GIMP images to and from a variety of obscure
+image formats."
 HOMEPAGE="http://netpbm.sourceforge.net/"
 SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-${PV}.tar.gz"
 SRC_DIR="gimp-netpbm2gimp-plugins-${PV}"
+
+DEPEND="netpbm2gimp"
 
 CYGPORT_USE_UNSTABLE_API=1
 src_unpack_hook() {
@@ -27,7 +34,7 @@ src_compile() {
 	CFLAGS+=" -I."
 	CYGCONF_SOURCE=${B}
 	cygconf --with-netpbmdir=${S}/../netpbm
-	cygmake
+	cygmake -j1
 }
 
 src_install() {
