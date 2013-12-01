@@ -1,0 +1,13 @@
+--- origsrc/netpbm/converter/other/jpeg2000/libjasper/base/jas_stream.c	2012-03-28 22:04:18.000000000 -0500
++++ src/netpbm/converter/other/jpeg2000/libjasper/base/jas_stream.c	2013-12-01 02:03:37.839059300 -0600
+@@ -127,8 +127,8 @@
+ #if defined(HAVE_UNISTD_H)
+ #include <unistd.h>
+ #endif
+-#if MSVCRT
+-#include <io.h>
++#if defined(HAVE_SETMODE)
++#include </usr/include/io.h>
+ #endif
+ 
+ #include "netpbm/pm.h"

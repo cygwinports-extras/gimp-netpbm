@@ -3,6 +3,9 @@ SVN_BRANCH="advanced"
 SVN_REV=1705
 inherit svn
 
+NAME="gimp-netpbm"
+VERSION=10.59.00
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="GIMP Netpbm plugins"
 DESCRIPTION="A collection of over 200 GIMP plug-ins created by running
@@ -10,8 +13,9 @@ unmodified Netpbm source code through Netpbm2Gimp. There is a particular
 emphasis on converting GIMP images to and from a variety of obscure
 image formats."
 HOMEPAGE="http://netpbm.sourceforge.net/"
-SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-${PV}.tar.gz"
-SRC_DIR="gimp-netpbm2gimp-plugins-${PV}"
+SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-${VERSION}.tar.gz"
+SRC_DIR="gimp-netpbm2gimp-plugins-${VERSION}"
+PATCH_URI="10.59.00-Wimplicit-decls.patch"
 
 DEPEND="netpbm2gimp"
 
