@@ -1,10 +1,5 @@
-SVN_URI="https://netpbm.svn.sourceforge.net/svnroot/netpbm"
-SVN_BRANCH="advanced"
-SVN_REV=1705
-inherit svn
-
 NAME="gimp-netpbm"
-VERSION=10.59.00
+VERSION=10.66.02
 RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="GIMP Netpbm plugins"
@@ -13,15 +8,20 @@ unmodified Netpbm source code through Netpbm2Gimp. There is a particular
 emphasis on converting GIMP images to and from a variety of obscure
 image formats."
 HOMEPAGE="http://netpbm.sourceforge.net/"
-SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-${VERSION}.tar.gz"
-SRC_DIR="gimp-netpbm2gimp-plugins-${VERSION}"
-PATCH_URI="10.59.00-Wimplicit-decls.patch"
+md5sum=dcb7de91384d630eb399e48c71158f3d
+SRC_URI="http://pkgs.fedoraproject.org/repo/pkgs/netpbm/netpbm-${VERSION}.tar.xz/${md5sum}/netpbm-${VERSION}.tar.xz"
+SRC_URI+=" mirror://sourceforge/netpbm2gimp/gimp-netpbm2gimp-plugins-10.65.07.tar.gz"
+SRC_DIR=.
+PATCH_URI="
+	10.65.07-system-libjasper.patch
+	10.65.07-netpbm-update.patch
+"
 
 DEPEND="netpbm2gimp"
 
-CYGPORT_USE_UNSTABLE_API=1
-src_unpack_hook() {
-	eval $(sed -e 's/ //g' ../netpbm/version.mk)
+#CYGPORT_USE_UNSTABLE_API=1
+__src_unpack_hook() {
+	eval $(sed -e 's/ //g' netpbm/version.mk)
 	if ((NETPBM_MAJOR_RELEASE != PVP[0])) ||
 	   ((NETPBM_MINOR_RELEASE != PVP[1])) ||
 	   ((NETPBM_POINT_RELEASE != PVP[2]))
@@ -32,20 +32,20 @@ src_unpack_hook() {
 
 src_compile() {
 	lndirs
-	cd ${B}
-	ln -sf $(find ${S}/../netpbm/lib/ -name '*.h') .
+	cd ${B}/gimp-netpbm2gimp-plugins-10.65.07
+	ln -sf $(find ${S}/netpbm-${VERSION}/lib/ -name '*.h') .
 	ln -sf . netpbm
 	CFLAGS+=" -I."
-	CYGCONF_SOURCE=${B}
-	cygconf --with-netpbmdir=${S}/../netpbm
+	CYGCONF_SOURCE=${S}/gimp-netpbm2gimp-plugins-10.65.07
+	cygconf --with-netpbmdir=${S}/netpbm-${VERSION}
 	cygmake -j1
 }
 
 src_install() {
 	local plugindir=$(pkg-config --variable=gimplibdir gimp-2.0)/plug-ins
-	cd ${B}
+	cd ${B}/gimp-netpbm2gimp-plugins-10.65.07
 	exeinto ${plugindir}
 	doexe *.exe
 
-	dodoc ${S}/../netpbm/doc/GPL_LICENSE.txt
+	dodoc ${S}/netpbm/doc/GPL_LICENSE.txt
 }

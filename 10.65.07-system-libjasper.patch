@@ -1,0 +1,67 @@
+--- origsrc/gimp-netpbm2gimp-plugins-10.65.07/csv2makefilein	2014-03-31 00:41:25.000000000 -0500
++++ src/gimp-netpbm2gimp-plugins-10.65.07/csv2makefilein	2015-01-30 13:14:47.392102200 -0600
+@@ -54,20 +54,8 @@ my %special_case =
+                          push @srcfiles, ("jbig.c", "jbig_tab.c")',
+      "pnmtojbig"     => '$cflags .= " -I\$(NPROOT)/$filterdir";
+                          push @srcfiles, ("jbig.c", "jbig_tab.c")',
+-     "jpeg2ktopam"   => '$cflags .= " -DEXCLUDE_BMP_SUPPORT -DEXCLUDE_RAS_SUPPORT -DEXCLUDE_MIF_SUPPORT -DEXCLUDE_JPG_SUPPORT -DEXCLUDE_PGX_SUPPORT -DEXCLUDE_PNM_SUPPORT";
+-                         $cflags .= " -I\$(NPROOT)/$filterdir/importinc";
+-                         $cflags .= " -I\$(NPROOT)/$filterdir/libjasper/include";
+-                         my $prevdir = getcwd();
+-                         chdir File::Spec->catdir($netpbmdir, $filterdir);
+-                         push @srcfiles, map {glob "libjasper/$_/*.c"} qw(base jp2 jpc);
+-                         chdir $prevdir;',
+-     "pamtojpeg2k"   => '$cflags .= " -DEXCLUDE_BMP_SUPPORT -DEXCLUDE_RAS_SUPPORT -DEXCLUDE_MIF_SUPPORT -DEXCLUDE_JPG_SUPPORT -DEXCLUDE_PGX_SUPPORT -DEXCLUDE_PNM_SUPPORT";
+-                         $cflags .= " -I\$(NPROOT)/$filterdir/importinc";
+-                         $cflags .= " -I\$(NPROOT)/$filterdir/libjasper/include";
+-                         my $prevdir = getcwd();
+-                         chdir File::Spec->catdir($netpbmdir, $filterdir);
+-                         push @srcfiles, map {glob "libjasper/$_/*.c"} qw(base jp2 jpc);
+-                         chdir $prevdir;',
++     "jpeg2ktopam"   => '$libs .= " -ljasper"',
++     "pamtojpeg2k"   => '$libs .= " -ljasper"',
+      "palmtopnm"     => 'push @srcfiles, "palmcolormap.c"',
+      "pnmtopalm"     => 'push @srcfiles, "palmcolormap.c"',
+      "pbmtoascii"    => '$formats = "pbm"',
+--- origsrc/netpbm-10.66.02/converter/other/jpeg2000/jpeg2ktopam.c	2014-05-19 07:18:09.000000000 -0500
++++ src/netpbm-10.66.02/converter/other/jpeg2000/jpeg2ktopam.c	2015-01-30 15:42:44.104301500 -0600
+@@ -12,6 +12,8 @@
+ /* Make sure strdup() is in string.h and int_fast32_t is in inttypes.h */
+ #define _XOPEN_SOURCE 600
+ #include <string.h>
++#include <jasper/jasper.h>
++#include "libjasper_compat.h"
+ 
+ #include "pm_c_util.h"
+ #include "pam.h"
+@@ -19,9 +21,6 @@
+ #include "nstring.h"
+ #include "mallocvar.h"
+ 
+-#include <jasper/jasper.h>
+-#include "libjasper_compat.h"
+-
+ enum compmode {COMPMODE_INTEGER, COMPMODE_REAL};
+ 
+ enum progression {PROG_LRCP, PROG_RLCP, PROG_RPCL, PROG_PCRL, PROG_CPRL};
+--- origsrc/netpbm-10.66.02/converter/other/jpeg2000/pamtojpeg2k.c	2014-05-19 07:18:09.000000000 -0500
++++ src/netpbm-10.66.02/converter/other/jpeg2000/pamtojpeg2k.c	2015-01-30 15:43:10.633670300 -0600
+@@ -12,6 +12,8 @@
+ /* Make sure strdup() is in string.h and int_fast32_t is in inttypes.h */
+ #define _XOPEN_SOURCE 600
+ #include <string.h>
++#include <jasper/jasper.h>
++#include "libjasper_compat.h"
+ 
+ #include "pm_c_util.h"
+ #include "pam.h"
+@@ -19,9 +21,6 @@
+ #include "nstring.h"
+ #include "mallocvar.h"
+ 
+-#include <jasper/jasper.h>
+-#include "libjasper_compat.h"
+-
+ 
+ enum compmode {COMPMODE_INTEGER, COMPMODE_REAL};
+ 

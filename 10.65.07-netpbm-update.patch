@@ -1,0 +1,10 @@
+--- origsrc/gimp-netpbm2gimp-plugins-10.65.07/testlog.csv	2014-03-31 00:41:25.000000000 -0500
++++ src/gimp-netpbm2gimp-plugins-10.65.07/testlog.csv	2015-01-30 15:32:30.947940500 -0600
+@@ -304,7 +304,6 @@
+ "other/pamdepth","OK","OK","OK",
+ "other/pamendian","OK","OK","OK","Doesn't do anything (expected)."
+ "other/pamexec","FAIL","FAIL","FAIL","Didn't test; uses pipes to communicate with standalone Netpbm utilities"
+-"other/pamfixtrunc","OK","OK","OK","Doesn't do anything (expected)."
+ "other/pamlookup","FAIL","FAIL","FAIL","Tries to spawn pamscale."
+ "other/pampick","OK","OK","OK","Of limited use; only one image per file is supported."
+ "other/pamsplit","OK","OK","OK","Of limited use; only one image per file is supported."
